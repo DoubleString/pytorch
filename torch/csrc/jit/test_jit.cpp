@@ -539,7 +539,7 @@ void testADFormulas() {
 
     // Trace and differentiate the op
     auto graph = trace(test, vars_in);
-    auto grad_spec = differentiate(graph);
+    auto grad_spec = differentiate(graph, std::vector<bool>(vars_out.size(), true));
 
     // Get outputs from the interpreter
     auto tensors_in                = fmap(vars_in, unwrap);
@@ -576,7 +576,7 @@ void testDifferentiate(std::ostream & out) {
   auto c = a * b * a + b;
   graph->registerOutput(c.value());
 
-  auto grad_spec = differentiate(graph);
+  auto grad_spec = differentiate(graph, {true, true});
   std::vector<Capture> expected_captures = {
     {Capture::Kind::Input, 0},
     {Capture::Kind::Input, 1},
